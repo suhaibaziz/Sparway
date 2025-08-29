@@ -1,5 +1,5 @@
-/* eslint-disable react/jsx-closing-tag-location */
 'use client';
+
 
 import Image from 'next/image';
 import { TiZoom } from 'react-icons/ti';
@@ -12,7 +12,7 @@ const ExploreCard = ({ id, imgUrl, title, index, active, handleClick }) => {
 
   const onActivate = () => handleClick?.(id);
 
-  const onKeyDown = (e) => {
+  const onKeyDown = e => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       onActivate();
