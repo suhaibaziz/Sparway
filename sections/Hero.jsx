@@ -29,32 +29,11 @@ const Hero = () => {
             variants={textVariant(0.95)}
             className="flex flex-row items-center justify-center"
           >
-            <h1 className={styles.heroHeading}> Gr</h1>
-
-            {/* الشعار الحروفي (EAT) — DOM بسيط وما فيه فيلترات ثقيلة */}
-            <div className="flex items-end gap-0">
-              {/* E */}
-              <div className="relative w-[40px] h-[80px]">
-                <div className="absolute left-0 top-0 w-[16px] h-full bg-white" />
-                <div className="absolute top-0 left-[16px] w-[120px] h-[16px] bg-white" />
-                <div className="absolute top-1/2 left-[16px] w-[50px] h-[16px] bg-white -translate-y-1/2" />
-                <div className="absolute bottom-0 left-[16px] w-[120px] h-[16px] bg-white" />
-              </div>
-              {/* A */}
-              <div className="relative w-[40px] h-[80px]">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[20px] border-r-[20px] border-b-[80px] border-l-transparent border-r-transparent border-b-white" />
-                <div className="absolute top-[8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[16px] border-r-[16px] border-b-[64px] border-l-transparent border-r-transparent border-b-[#1a232e]" />
-              </div>
-              {/* T */}
-              <div className="relative w-[100px] h-[80px]">
-                <div className="absolute top-0 left-0 w-full h-[16px] bg-white" />
-                <div className="absolute top-0 left-1/2 w-[16px] h-full bg-white -translate-x-1/2" />
-              </div>
-            </div>
-
-            <h1 className={styles.heroHeading}> Ness</h1>
+            <h1 className={styles.heroHeading}>Mar</h1>
+            <h1 className={styles.heroHeading}>K</h1>
+            <h1 className={styles.heroHeading}>eting</h1>
           </motion.div>
-        </div>
+        </div> 
 
         <motion.div
           variants={slideIn('right', 'tween', 0.2, 1)}
@@ -79,25 +58,37 @@ const Hero = () => {
 
           <div className="absolute w-full h-[60px] hero-gradient rounded-bl-[140px] z-[0] sm:-bottom-[20px] -bottom-[10px]" />
 
-          <a href="#explore">
-            <div className="w-full flex justify-end sm:-mt-[70px] -mt-[50px] pr-[40px] relative z-10 2xl:-ml-[100px]">
-              {/* بدل motion.img: خلّينا الأنيميشن على wrapper لتستفيد من will-change */}
-              <motion.div
-                className="[will-change:transform]"
-                animate={prefersReduced ? {} : { rotate: 360 }}
-                transition={prefersReduced ? {} : { repeat: Infinity, duration: 10, ease: 'linear' }}
-              >
-                <Image
-                  src="/stamp.png"
-                  alt="stamp"
-                  width={155}
-                  height={155}
-                  loading="lazy"     // ما له ضروري للـLCP
-                  sizes="(max-width: 640px) 100px, 155px"
-                />
-              </motion.div>
-            </div>
-          </a>
+{/* شِلّ الـ <a href="#explore"> عن الـdiv الكبير */}
+<div className="w-full flex justify-end sm:-mt-[70px] -mt-[50px] pr-[40px] relative z-10 2xl:-ml-[100px] pointer-events-none">
+  {/* الـstamp يتحرّك، لكن ما عليه كليك */}
+  <motion.div
+    className="[will-change:transform]"
+    animate={prefersReduced ? {} : { rotate: 360 }}
+    transition={prefersReduced ? {} : { repeat: Infinity, duration: 10, ease: 'linear' }}
+  >
+<Image
+  onClick={() => {
+    const el = document.getElementById('explore');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }}
+  src="/stamp.png"
+  alt="stamp"
+  width={155}
+  height={155}
+  loading="lazy"
+  sizes="(max-width: 640px) 100px, 155px"
+  className="cursor-pointer"
+  role="button"
+/>
+
+  </motion.div>
+
+  {/* زر “Explore” فقط هو القابل للنقر */}
+
+</div>
+
         </motion.div>
       </motion.div>
     </section>
