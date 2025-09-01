@@ -1,13 +1,14 @@
 'use client';
 
-// app/leistungen/[slug]/page.jsx
+
 import Image from "next/image";
+
 import { motion } from 'framer-motion';
+
 import Link from "next/link";
-// اختر واحداً من السطرين حسب مكان الملف:
-// import { getServiceSlugs, getServiceBySlug } from "@/data/services";
+
 import { getServiceSlugs, getServiceBySlug } from "../../../constants/service";
-import LinkPreviewCard from "../../../components/LinkPreviewCard";
+
 const previewSrc = (url) =>
   // جرّب mShots أولاً (سريع ومجاني) – غيّر إلى thum.io إذا حبيت
   `https://s.wordpress.com/mshots/v1/${encodeURIComponent(url)}?w=800`;
