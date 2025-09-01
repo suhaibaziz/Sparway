@@ -72,33 +72,36 @@ const Hero = () => {
           <div className="absolute w-full h-[68px] hero-gradient rounded-tl-[140px] rounded-tr-[140px] z-[0] sm:-top-[35px] max-lg:-top-[37px]" />
 
           {/* Flex-Container für Bilder */}
-          <div className="relative w-full sm:h-[600px] h-[450px] rounded-tl-[140px] z-10 flex flex-col sm:flex-row items-center justify-center gap-6">
-            {/* Hero.png */}
-            <div className="relative w-full sm:w-[45%] h-full">
-              <Image
-                src="/hero.png"
-                alt="Digitales Marketing – Illustration"
-                fill
-                priority
-                placeholder="blur"
-                blurDataURL="/hero-blur.png"
-                sizes="(max-width: 640px) 100vw, (max-width: 800px) 40vw, 600px"
-                className="object-contain"
-              />
-            </div>
+{/* Flex-Container für Bilder */}
+<div className="relative w-full h-[220px] sm:h-[600px] rounded-tl-[140px] z-10 flex flex-row items-stretch justify-center gap-4">
+  {/* hero.png */}
+  <div className="relative w-1/2 h-full">
+    <Image
+      src="/hero.png"
+      alt="Digitales Marketing – Illustration"
+      fill
+      priority
+      placeholder="blur"
+      blurDataURL="/hero-blur.png"
+      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 600px"
+      className="object-contain object-center"
+    />
+  </div>
 
-            {/* 123.webp oder 123.avif */}
-            <div className="relative w-full sm:w-[45%] h-full">
-              <Image
-                src="/craiyon_124738_image.webp" // oder "/123.avif"
-                alt="Zusätzliches Bild"
-                fill
-                loading="lazy"
-                // sizes="(max-width: 440px) 100vw, (max-width: 550px) 35vw, 400px"
-                className="object-contain rounded-xl"
-              />
-            </div>
-          </div>
+  {/* 123.webp / avif */}
+  <div className="relative w-1/2 h-full">
+    <Image
+      src="/craiyon_124738_image.webp"
+      alt="Zusätzliches Bild"
+      fill
+      loading="lazy"
+      className="object-contain object-center rounded-xl"
+      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 600px"
+    />
+  </div>
+</div>
+
+
 
           <div className="absolute w-full h-[60px] hero-gradient rounded-bl-[140px] rounded-br-[140px] z-[0] sm:-bottom-[20px] -bottom-[10px]" />
 
