@@ -2,22 +2,22 @@ export const exploreWorlds = [
   {
     id: 'world-1',
     imgUrl: '/webdev.jpg',
-    title: 'Webdesign Welt',
+    title: 'Webdesign',
   },
   {
     id: 'world-2',
     imgUrl: '/seo2.jpg',
-    title: 'SEO Galaxie',
+    title: 'SEO & Google Ads',
   },
   {
     id: 'world-3',
     imgUrl: '/social-media.jpg',
-    title: 'Social Media Universum',
+    title: 'Social Media Ads & Marketing',
   },
   {
     id: 'world-4',
     imgUrl: '/branding.jpg',
-    title: 'Branding Dimension',
+    title: 'Branding & Design',
   },
   {
     id: 'world-5',
@@ -86,5 +86,41 @@ export const socials = [
     name: 'instagram',
     url: '/instagram.svg',
     link: 'https://www.instagram.com/_viggi.g_/',
+  },
+];
+
+
+// Service groups for the GetStarted selector
+export const serviceOptions = [
+  {
+    category: 'Website Development',
+    note: '(WordPress, Laravel, React)',
+    items: [
+      'Landing Pages',
+      'SEO Optimization',
+      'E-Commerce Shops',
+      'CRM & Chatbots',
+      'Google Analytics & Tracking',
+    ],
+  },
+  {
+    category: 'Logo & Branding',
+    items: [
+      'Logo Design',
+      'Corporate Identity',
+      'Business Profile PDF',
+      'Flyers, Brochures, Posters',
+      'Professional Photography',
+      'Promo Videos & Reels',
+    ],
+  },
+  {
+    category: 'Social Media Management',
+    items: [
+      'Content Creation (Posts, Reels, Videos)',
+      'Paid Advertising (Facebook, Instagram, TikTok, Google Ads)',
+      'Community Management',
+      'Monthly Reports & Analytics',
+    ],
   },
 ];

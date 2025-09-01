@@ -4,7 +4,7 @@ import { glob } from "glob";
 import path from "path";
 import fs from "fs";
 
-const inputPattern = "public/**/*.{jpg,jpeg,png}";
+const inputPattern = "public/ChatGPT Image Aug 29, 2025, 06_18_02 PM.{jpg,jpeg,png}";
 const outputQuality = 70; // جودة مناسبة (60-75 عادة مثالية)
 
 (async () => {
