@@ -39,7 +39,7 @@ const Navbar = () => (
             src="/log-circle.png"
             alt="logo"
             fill
-            sizes="70px"
+            sizes="112px"
             className="object-contain max-w-[80%]"
             priority
           />
