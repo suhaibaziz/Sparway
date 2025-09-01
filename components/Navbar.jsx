@@ -40,7 +40,7 @@ const Navbar = () => (
             alt="logo"
             fill
             sizes="70px"
-            className="object-contain"
+            className="object-contain max-w-[80%]"
             priority
           />
         </motion.div>
