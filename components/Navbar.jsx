@@ -39,7 +39,7 @@ const Navbar = () => (
             src="/log-circle.png"
             alt="logo"
             fill
-            sizes="110px"
+            sizes="70px"
             className="object-contain"
             priority
           />
