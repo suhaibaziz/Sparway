@@ -3,28 +3,31 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { TiZoom } from 'react-icons/ti';
-import { fadeIn } from '../utils/motion';
 import { motion, useReducedMotion } from 'framer-motion';
+import { fadeIn } from '../utils/motion';
 import styles from '../styles';
 
-const slugify = (s) =>
-  s
+// avoid arrow-parens + implicit-arrow-linebreak issues by using a fn
+function slugify(s) {
+  return s
     .toLowerCase()
     .replace(/&/g, 'und')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
+}
 
 const ExploreCard = ({ id, imgUrl, title, index, active, handleClick, href }) => {
   const prefersReduced = useReducedMotion();
+
   const onActivate = () => handleClick?.(id);
-  const onKeyDown = (e) => {
+
+  const onKeyDown = e => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       onActivate();
     }
   };
 
-  // رابط افتراضي إذا ما تم تمرير href
   const link = href || `/leistungen/${slugify(title)}`;
 
   return (
@@ -43,7 +46,7 @@ const ExploreCard = ({ id, imgUrl, title, index, active, handleClick, href }) =>
       aria-pressed={active === id}
       aria-label={`Open ${title}`}
     >
-      {/* الخلفية */}
+      {/* background image */}
       <Image
         src={imgUrl}
         alt={title}
@@ -54,38 +57,28 @@ const ExploreCard = ({ id, imgUrl, title, index, active, handleClick, href }) =>
         className="absolute inset-0 rounded-[24px] object-cover"
       />
 
-      {/* زر العدسة دائمًا أعلى اليمين */}
-      {/* <div className="absolute top-3 right-3 z-10">
-        <Link
-          href={link}
-          aria-label={`${title} – Details ansehen`}
-          onClick={(e) => e.stopPropagation()}
-          className="block rounded-xl p-2 bg-black/50 backdrop-blur hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/40"
-        >
-          <TiZoom className="w-6 h-6 text-white" />
-        </Link>
-      </div> */}
-
-      {/* Overlay النصوص */}
+      {/* overlay */}
       {active !== id ? (
-        <div className="pointer-events-none h-1/3 absolute bottom-0 p-2 w-full flex-col bg-[rgba(0,0,0,0.7)] rounded-b-[24px]">
-          <h3 className="font-semibold sm:text-[26px] text-[18px] text-white absolute z-0 lg:bottom-20 lg:rotate-[-90deg] lg:origin-[0,0]">
+        <div className="pointer-events-none absolute bottom-0 h-1/3 w-full p-2 bg-[rgba(0,0,0,0.7)] rounded-b-[24px]">
+          <h3 className="absolute z-0 font-semibold sm:text-[26px] text-[18px] text-white lg:bottom-20 lg:rotate-[-90deg] lg:origin-[0,0]">
             {title}
           </h3>
         </div>
       ) : (
-        <div className="absolute bottom-0 p-8 w-full flex-col bg-[rgba(0,0,0,0.5)] rounded-b-[24px]">
-          <div className={`${styles.flexCenter} w-[60px] h-[60px] glassmorphism mb-[16px] rounded-[12px]`}>
-            {/* الأيقونة العلوية أصبحت قابلة للنقر؛ هذه للزينة فقط */}
+        <div className="absolute bottom-0 w-full p-8 bg-[rgba(0,0,0,0.5)] rounded-b-[24px]">
+          <div className={`${styles.flexCenter} mb-[16px] h-[60px] w-[60px] glassmorphism rounded-[12px]`}>
             <Link
-          href={link}
-          aria-label={`${title} – Details ansehen`}
-          onClick={(e) => e.stopPropagation()}
-          className="block rounded-xl p-2 bg-black/50 backdrop-blur hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/40"
-        >
-          <TiZoom className="w-6 h-6 text-white" />
-        </Link>
+              href={link}
+              aria-label={`${title} – Details ansehen`}
+              onClick={e => {
+                e.stopPropagation();
+              }}
+              className="block rounded-xl p-2 bg-black/50 backdrop-blur hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/40"
+            >
+              <TiZoom className="h-6 w-6 text-white" />
+            </Link>
           </div>
+
           <p className="font-normal text-[16px] leading-[20.16px] text-white uppercase">Explore more</p>
           <h2 className="mt-[24px] font-semibold sm:text-[32px] text-[24px] text-white">{title}</h2>
         </div>
