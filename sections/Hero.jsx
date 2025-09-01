@@ -83,7 +83,7 @@ const Hero = () => {
       priority
       placeholder="blur"
       blurDataURL="/hero-blur.png"
-      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 600px"
+      // sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 600px"
       className="object-contain object-center"
     />
   </div>
@@ -96,7 +96,7 @@ const Hero = () => {
       fill
       loading="lazy"
       className="object-contain object-center rounded-xl"
-      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 600px"
+      // sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 600px"
     />
   </div>
 </div>
@@ -119,8 +119,8 @@ const Hero = () => {
                 width={155}
                 height={155}
                 loading="lazy"
-                sizes="(max-width: 640px) 100px, 155px"
-                className="cursor-pointer"
+                sizes="(max-width: 640px) 8px, 105px"
+                className="cursor-pointer max-[680px]:max-w-[80px]"
                 role="button"
               />
             </motion.div>

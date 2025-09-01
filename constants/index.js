@@ -1,31 +1,10 @@
 export const exploreWorlds = [
-  {
-    id: 'world-1',
-    imgUrl: '/webdev.jpg',
-    title: 'Webdesign',
-  },
-  {
-    id: 'world-2',
-    imgUrl: '/seo2.jpg',
-    title: 'SEO & Google Ads',
-  },
-  {
-    id: 'world-3',
-    imgUrl: '/social-media.jpg',
-    title: 'Social Media Ads & Marketing',
-  },
-  {
-    id: 'world-4',
-    imgUrl: '/branding.jpg',
-    title: 'Branding & Design',
-  },
-  {
-    id: 'world-5',
-    imgUrl: '/werbung.jpg',
-    title: 'Werbe-Kosmos',
-  },
+  { id: 'world-1', imgUrl: '/webdev.jpg',  title: 'Webdesign',                    href: '/leistungen/webdesign' },
+  { id: 'world-2', imgUrl: '/seo2.jpg',    title: 'SEO & Google Ads',            href: '/leistungen/seo-google-ads' },
+  { id: 'world-3', imgUrl: '/social-media.jpg', title: 'Social Media Ads & Marketing', href: '/leistungen/social-media' },
+  { id: 'world-4', imgUrl: '/branding.jpg', title: 'Branding & Design',           href: '/leistungen/branding' },
+  { id: 'world-5', imgUrl: '/werbung.jpg',  title: 'Werbe-Kosmos',                 href: '/leistungen/werbung' },
 ];
-
 
 export const startingFeatures = [
   'Wähle die passende Geschäftslösungen für dein Unternehmen',

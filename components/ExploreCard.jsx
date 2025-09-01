@@ -1,23 +1,31 @@
 'use client';
 
-
 import Image from 'next/image';
+import Link from 'next/link';
 import { TiZoom } from 'react-icons/ti';
 import { fadeIn } from '../utils/motion';
 import { motion, useReducedMotion } from 'framer-motion';
 import styles from '../styles';
 
-const ExploreCard = ({ id, imgUrl, title, index, active, handleClick }) => {
+const slugify = (s) =>
+  s
+    .toLowerCase()
+    .replace(/&/g, 'und')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+const ExploreCard = ({ id, imgUrl, title, index, active, handleClick, href }) => {
   const prefersReduced = useReducedMotion();
-
   const onActivate = () => handleClick?.(id);
-
-  const onKeyDown = e => {
+  const onKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       onActivate();
     }
   };
+
+  // رابط افتراضي إذا ما تم تمرير href
+  const link = href || `/leistungen/${slugify(title)}`;
 
   return (
     <motion.div
@@ -41,10 +49,22 @@ const ExploreCard = ({ id, imgUrl, title, index, active, handleClick }) => {
         alt={title}
         fill
         sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 33vw"
-        priority={index === 0}           // أول صورة بس بتكون أولوية
+        priority={index === 0}
         loading={index === 0 ? 'eager' : 'lazy'}
         className="absolute inset-0 rounded-[24px] object-cover"
       />
+
+      {/* زر العدسة دائمًا أعلى اليمين */}
+      {/* <div className="absolute top-3 right-3 z-10">
+        <Link
+          href={link}
+          aria-label={`${title} – Details ansehen`}
+          onClick={(e) => e.stopPropagation()}
+          className="block rounded-xl p-2 bg-black/50 backdrop-blur hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/40"
+        >
+          <TiZoom className="w-6 h-6 text-white" />
+        </Link>
+      </div> */}
 
       {/* Overlay النصوص */}
       {active !== id ? (
@@ -54,10 +74,17 @@ const ExploreCard = ({ id, imgUrl, title, index, active, handleClick }) => {
           </h3>
         </div>
       ) : (
-        <div className="pointer-events-none absolute bottom-0 p-8 w-full flex-col bg-[rgba(0,0,0,0.5)] rounded-b-[24px]">
+        <div className="absolute bottom-0 p-8 w-full flex-col bg-[rgba(0,0,0,0.5)] rounded-b-[24px]">
           <div className={`${styles.flexCenter} w-[60px] h-[60px] glassmorphism mb-[16px] rounded-[12px]`}>
-            {/* TiZoom ما بده alt — هو آيقونة SVG */}
-            <TiZoom className="w-1/2 h-1/2" aria-hidden="true" />
+            {/* الأيقونة العلوية أصبحت قابلة للنقر؛ هذه للزينة فقط */}
+            <Link
+          href={link}
+          aria-label={`${title} – Details ansehen`}
+          onClick={(e) => e.stopPropagation()}
+          className="block rounded-xl p-2 bg-black/50 backdrop-blur hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/40"
+        >
+          <TiZoom className="w-6 h-6 text-white" />
+        </Link>
           </div>
           <p className="font-normal text-[16px] leading-[20.16px] text-white uppercase">Explore more</p>
           <h2 className="mt-[24px] font-semibold sm:text-[32px] text-[24px] text-white">{title}</h2>
