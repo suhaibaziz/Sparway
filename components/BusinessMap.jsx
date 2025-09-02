@@ -2,9 +2,8 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { fadeIn } from '../utils/motion'; // adjust if needed
+import { fadeIn } from '../utils/motion';
 
-// Icons in /public/designs (70x70 or 50x50)
 const markers = [
   { type: 'clothes',     src: '/designs/clothes.png',           alt: 'Bekleidungsgeschäft', top: '32%', left: '50%' },
   { type: 'doctor',      src: '/designs/doctor.png',            alt: 'Arztpraxis',          top: '10%', left: '30%' },
@@ -28,43 +27,41 @@ const markers = [
   { type: 'accounting',  src: '/designs/buchhalter.png',        alt: 'Steuerberatung',      top: '8%',  left: '58%' },
 ];
 
-const BusinessMap = () => {
-  return (
-    <motion.div
-      variants={fadeIn('up', 'tween', 0.3, 1)}
-      className="relative mt-[69px] flex w-full h-[550px]"
-    >
-      {/* Map background */}
-      <Image
-        src="/designs/GermanyMap.webp"
-        alt="Deutschland-Karte"
-        fill
-        className="object-contain"
-        priority
-      />
+const BusinessMap = () => (
+  <motion.div
+    variants={fadeIn('up', 'tween', 0.3, 1)}
+    className="relative mt-[69px] flex w-full h-[550px]"
+  >
+    {/* Map background */}
+    <Image
+      src="/designs/GermanyMap.webp"
+      alt="Deutschland-Karte"
+      fill
+      className="object-contain"
+      priority
+    />
 
-      {/* Markers */}
-      {markers.map(m => (
-        <div
-          key={`${m.type}-${m.top}-${m.left}`}
-          className="absolute w-[55px] h-[55px] p-[4px] rounded-full bg-[#5d6680] [box-shadow:0_0_0_1px_rgba(255,255,255,.15)]"
-          style={{ top: m.top, left: m.left }}
-          title={m.alt}
-          aria-label={m.alt}
-        >
-          <div className="relative w-full h-full">
-            <Image
-              src={m.src}
-              alt={m.alt}
-              fill
-              sizes="55px"
-              className="object-contain"
-            />
-          </div>
+    {/* Markers */}
+    {markers.map(m => (
+      <div
+        key={`${m.type}-${m.top}-${m.left}`}
+        className="absolute w-[55px] h-[55px] p-[4px] rounded-full bg-[#5d6680] [box-shadow:0_0_0_1px_rgba(255,255,255,.15)]"
+        style={{ top: m.top, left: m.left }}
+        title={m.alt}
+        aria-label={m.alt}
+      >
+        <div className="relative w-full h-full">
+          <Image
+            src={m.src}
+            alt={m.alt}
+            fill
+            sizes="55px"
+            className="object-contain"
+          />
         </div>
-      ))}
-    </motion.div>
-  );
-};
+      </div>
+    ))}
+  </motion.div>
+);
 
 export default BusinessMap;
