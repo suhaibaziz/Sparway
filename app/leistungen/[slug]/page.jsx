@@ -1,7 +1,10 @@
 'use client';
 
+import { FiPlus, FiX } from "react-icons/fi";
 
 import Image from "next/image";
+
+import { useState, useMemo } from "react";
 
 import { motion } from 'framer-motion';
 
@@ -59,72 +62,114 @@ export default function ServicePage({ params }) {
         </div>
       </section>
 
-      {/* Leistungspakete & Beispiele (بديل المشاريع/Preise) */}
-   {/* Leistungspakete & Beispiele */}
+{/* Leistungspakete & Beispiele */}
+{/* Leistungspakete & Beispiele */}
+{/* Leistungspakete & Beispiele */}
 <section className="mx-auto max-w-6xl px-6 pb-6">
   <h2 className="text-2xl md:text-3xl font-bold">Leistungspakete & Beispiele</h2>
   <p className="mt-2 text-white/70">
     Wählen Sie das passende Paket – alle Preise sind Startpreise und werden an Ihr Projekt angepasst.
   </p>
 
-  <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {s.deliverables.map((d) => {
-      const href = `/termin?service=${encodeURIComponent(s.slug)}&paket=${encodeURIComponent(d.slug)}`;
-      return (
-        <div key={d.slug} className="rounded-2xl border border-white/10 p-6 flex flex-col">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold">{d.title}</h3>
-            <span className="text-sm px-3 py-1 rounded-full bg-white/10">{d.timeline}</span>
-          </div>
-          <p className="mt-2 text-white/80">{d.description}</p>
+  {(() => {
+    const isWebdesign = s.slug === 'webdesign';
+    const [expanded, setExpanded] = useState(null);
 
-          <ul className="mt-4 space-y-2 text-white/80">
-            {d.includes.map((f, i) => <li key={i}>• {f}</li>)}
+    const Card = ({ d }) => {
+      const isOpen = expanded === d.slug;
+
+      // Decide which examples to render
+      const examples = d.examples?.length ? (isOpen ? d.examples : [d.examples[0]]) : [];
+
+      return (
+        <div
+          key={d.slug}
+          className={[
+            'rounded-2xl border border-white/10 p-6 flex flex-col transition-all',
+            isWebdesign && isOpen ? 'col-span-full' : '',
+          ].join(' ')}
+        >
+          {/* Header */}
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="text-xl font-bold">{d.title}</h3>
+              <span className="mt-1 inline-flex text-xs px-3 py-1 rounded-full bg-white/10">
+                {d.timeline}
+              </span>
+            </div>
+
+            {isWebdesign && (
+              <button
+  type="button"
+  onClick={() => setExpanded(isOpen ? null : d.slug)}
+  className={`${
+    isOpen ? "bg-red-600" : "bg-green-800"
+  } rounded-xl p-2 hover:bg-white/20 flex items-center justify-center`}
+  aria-expanded={isOpen}
+  aria-controls={`pkg-${d.slug}`}
+  title={isOpen ? "Schließen" : "Details"}
+>
+  {isOpen ? (
+    <FiX className="w-5 h-5 text-white" />
+  ) : (
+    <FiPlus className="w-5 h-5 text-white" />
+  )}
+</button>
+            )}
+          </div>
+
+          <p className="mt-3 text-sm text-white/80">{d.description}</p>
+
+          <ul className="mt-4 space-y-2 text-sm text-white/80">
+            {d.includes.map((f, i) => (
+              <li key={i}>• {f}</li>
+            ))}
           </ul>
 
-          {/* أمثلة من الإنترنت */}
-{/* أمثلة من الويب مع صور تلقائية */}
-{d.examples?.length > 0 && (
-  <div className="mt-5">
-    <p className="text-white/70 text-sm mb-2">Beispiele aus dem Web:</p>
+          {/* Beispiele */}
+          {examples.length > 0 && (
+            <div id={`pkg-${d.slug}`} className="mt-5">
+              <p className="mb-2 text-sm text-white/70">
+                {isOpen ? 'Beispiele aus dem Web:' : 'Beispiel aus dem Web:'}
+              </p>
 
-    <div className="grid grid-cols-1 gap-3">
-      {d.examples.map((ex, i) => (
-        <a
-          key={i}
-          href={ex.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative overflow-hidden rounded-xl border border-white/10 hover:border-cyan-400/50 transition"
-          title={ex.note || ex.title}
-        >
-          <div className="relative w-full aspect-[16/9]">
-            <Image
-              src={previewSrc(ex.url)}
-              alt={ex.title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform"
-            />
-          </div>
-
-          <div className="p-3 flex items-center justify-between">
-            <div>
-              <p className="font-semibold">{ex.title}</p>
-              {ex.note && <p className="text-sm text-white/60">{ex.note}</p>}
+              <div className={isOpen ? 'grid sm:grid-cols-2 lg:grid-cols-3 gap-4' : 'grid grid-cols-1 gap-3'}>
+                {examples.map((ex, i) => (
+                  <a
+                    key={i}
+                    href={ex.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative overflow-hidden rounded-xl border border-white/10 hover:border-cyan-400/50 transition"
+                    title={ex.note || ex.title}
+                  >
+                    <div className={`relative w-full ${isOpen ? 'aspect-[16/9]' : 'aspect-[16/10]'}`}>
+                      <Image
+                        src={previewSrc(ex.url)}
+                        alt={ex.title}
+                        fill
+                        unoptimized
+                        className="object-cover group-hover:scale-105 transition-transform"
+                      />
+                    </div>
+                    <div className="p-3 flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold">{ex.title}</p>
+                        {ex.note && <p className="text-sm text-white/60">{ex.note}</p>}
+                      </div>
+                      <span className="text-xs rounded bg-white/10 px-2 py-1">Live&nbsp;Preview</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
-            <span className="text-xs px-2 py-1 rounded bg-white/10">Live&nbsp;Preview</span>
-          </div>
-        </a>
-      ))}
-    </div>
-  </div>
-)}
+          )}
 
-
-          <div className="mt-5 flex items-center justify-between">
+          {/* Footer */}
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
             <span className="text-cyan-300 font-semibold">{d.startPrice}</span>
             <Link
-              href={href}
+              href={`/termin?service=${encodeURIComponent(s.slug)}&paket=${encodeURIComponent(d.slug)}`}
               className="rounded-xl px-4 py-2 font-semibold bg-white/10 hover:bg-white/20"
               aria-label={`Angebot für ${d.title} anfragen`}
             >
@@ -133,9 +178,92 @@ export default function ServicePage({ params }) {
           </div>
         </div>
       );
-    })}
-  </div>
+    };
+
+    // Keep all cards visible; expanded one spans full row
+    const gridClass =
+      'grid sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-6 auto-rows-auto';
+
+    return (
+      <div className={gridClass}>
+        {s.deliverables.map(d => (
+          <Card key={d.slug} d={d} />
+        ))}
+      </div>
+    );
+  })()}
 </section>
+{/* Branding / Design – Galerie */}
+{s.gallery?.length > 0 && (
+  <section className="mx-auto max-w-6xl px-6 py-10">
+    <h2 className="text-2xl md:text-3xl font-bold">Branding Galerie</h2>
+    <p className="mt-2 text-white/70">
+      Ein Auszug unserer Arbeiten – Logos, Social-Vorlagen, Print/Packaging & mehr.
+    </p>
+
+    {(() => {
+      const [activeType, setActiveType] = useState("Alle");
+      const types = useMemo(() => {
+        const set = new Set(s.gallery.map(g => g.type));
+        return ["Alle", ...Array.from(set)];
+      }, [s.gallery]);
+
+      const items = useMemo(() => {
+        if (activeType === "Alle") return s.gallery;
+        return s.gallery.filter(g => g.type === activeType);
+      }, [activeType, s.gallery]);
+
+      return (
+        <>
+          {/* Filter chips */}
+          <div className="mt-4 flex flex-wrap gap-2">
+            {types.map(t => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setActiveType(t)}
+                className={`rounded-full px-4 py-2 text-sm border ${
+                  activeType === t
+                    ? "bg-white/20 border-white/30"
+                    : "bg-white/5 border-white/10 hover:bg-white/10"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+
+          {/* Grid */}
+          <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {items.map((g, i) => (
+              <div key={`${g.src}-${i}`} className="group overflow-hidden rounded-xl border border-white/10">
+                <div className="relative w-full aspect-[4/3]">
+                  <Image
+                    src={g.src}
+                    alt={g.title}
+                    fill
+                    className="object-cover group-hover:scale-[1.03] transition-transform"
+                    // remove unoptimized if local files in /public
+                    // unoptimized 
+                  />
+                </div>
+                <div className="p-3 flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold">{g.title}</p>
+                    <p className="text-sm text-white/60">{g.type}</p>
+                  </div>
+                  <span className="text-xs rounded bg-white/10 px-2 py-1">Design</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      );
+    })()}
+  </section>
+)}
+
+
 
       {/* FAQs */}
       {s.faqs?.length > 0 && (

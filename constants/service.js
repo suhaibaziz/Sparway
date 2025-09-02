@@ -210,6 +210,139 @@ export const services = [
       ],
       cta: { text: "Social starten", href: "/termin" },
     },
+    // --- ADD after your existing services ---
+
+{
+  slug: "branding",                           // matches /leistungen/branding
+  title: "Branding & Design",
+  tagline: "Einprägsame Marken, die auffallen – von Logo bis Packaging.",
+  heroImage: "/services/branding/hero.jpg",
+  deliverables: [
+    {
+      slug: "logo-kit",
+      title: "Logo Kit",
+      description:
+        "Hauptlogo, Variationen, Schwarz/Weiß, Favicon – sauber als Assets exportiert.",
+      startPrice: "ab 790 €",
+      timeline: "1–2 Wochen",
+      includes: [
+        "3–4 Logo-Entwürfe + 2 Runden Revision",
+        "Finale Dateien: SVG, PDF, PNG",
+        "Favicon / App-Icon",
+        "Mini-Style-Sheet (Farben/Typo)",
+      ],
+      // websites not relevant here; we keep examples empty or link to dribbble/behance if desired
+      examples: [],
+    },
+    {
+      slug: "brand-kit",
+      title: "Brand Kit (Light)",
+      description:
+        "Kompakter Markenbaukasten für Social/Ads/Website – schnell einsetzbar.",
+      startPrice: "ab 1.490 €",
+      timeline: "2–3 Wochen",
+      includes: [
+        "Logo-Set + Farbpalette + Typografie",
+        "Social-Templates (IG/FB/LinkedIn, 6–10 Vorlagen)",
+        "Buttons/Icons/Patterns",
+        "Brand Guideline (10–15 Seiten)",
+      ],
+      examples: [],
+    },
+    {
+      slug: "social-templates",
+      title: "Social Templates",
+      description:
+        "Wiederverwendbare Vorlagen (Feed/Story/Reel-Cover) für konsistenten Auftritt.",
+      startPrice: "ab 590 €",
+      timeline: "5–7 Tage",
+      includes: [
+        "8–12 Templates (IG/FB/LinkedIn, PSD/FIG/Canva)",
+        "Cover/Thumbnails, Story-Sequenzen",
+        "Export-Vorgaben (Formate/Größen)",
+        "Kurze Übergabe-Session",
+      ],
+      examples: [],
+    },
+    {
+      slug: "print-packaging",
+      title: "Print & Packaging",
+      description:
+        "Flyer, Plakate, Packaging – druckfertige Daten mit Beschnitt & Farbprofil.",
+      startPrice: "ab 690 €",
+      timeline: "1–3 Wochen",
+      includes: [
+        "Layout-Entwürfe + 2 Revisionen",
+        "Druck-PDF (CMYK, 3mm Beschnitt)",
+        "Mockups zur Vorschau",
+        "Lieferanten-Handling optional",
+      ],
+      examples: [],
+    },
+  ],
+  // real works go here:
+  gallery: [
+    // type can be "Logo", "Social", "Poster", "Packaging", "Guideline"
+    { title: "Acme – Primärlogo",        type: "Logo",      src: "/portfolio/branding/acme-logo-primary.png" },
+    { title: "Acme – Monogramm",         type: "Logo",      src: "/portfolio/branding/acme-logo-mark.png" },
+    { title: "Sparway – Social Set 01",   type: "Social",    src: "/designs/MedicalHealthcare.webp" },
+    { title: "Seo – Social Set 02",   type: "Social",    src: "/designs/seo.avif" },
+    { title: "Degital-Marketing – Social Set 02",   type: "Social",    src: "/designs/digitalmarketing.avif" },
+    { title: "Resturant –  Poster",     type: "Poster",    src: "/designs/HotdogListe.avif" },
+    { title: "Branding – Sparway", type: "Poster", src: "/designs/Branding.avif" },
+    // { title: "Herbal – Box Packaging",   type: "Packaging", src: "/portfolio/branding/herbal-pack-box.jpg" },
+    // { title: "Brand Guideline – Excerpt",type: "Guideline", src: "/portfolio/branding/brand-guide-spread.jpg" },
+  ],
+  faqs: [
+    { q: "Wie läuft die Logo-Entwicklung ab?", a: "Briefing → Moodboard → 3–4 Entwürfe → 2 Revisionen → Finalisierung & Übergabe der Dateien." },
+    { q: "Liefern Sie druckfertige Daten?", a: "Ja. CMYK, korrekte Beschnittzugabe, Profile und Export für Ihre Druckerei." },
+  ],
+  cta: { text: "Branding anfragen", href: "/termin" },
+},
+
+{
+  slug: "werbung",                         // matches /leistungen/werbung
+  title: "Werbung & Kampagnen",
+  tagline: "Kreative Kampagnen, die Aufmerksamkeit in Ergebnisse verwandeln.",
+  heroImage: "/services/ads/hero.jpg",
+  deliverables: [
+    {
+      slug: "kampagnen-konzept",
+      title: "Kampagnen-Konzept",
+      description:
+        "Von Leitidee bis Media-Plan: Botschaft, Creatives, Kanäle und KPIs aus einem Guss.",
+      startPrice: "ab 1.490 €",
+      timeline: "1–2 Wochen",
+      includes: [
+        "Creative Leitidee, Hook-Angles",
+        "Key Visuals + Copy-Lines",
+        "Media-Mix Vorschlag",
+        "Messkonzept (KPIs, Events)",
+      ],
+      examples: [],
+    },
+    {
+      slug: "ad-creatives",
+      title: "Ad-Creatives Paket",
+      description:
+        "Statisches + Video-Material für Meta/TikTok/LinkedIn inkl. Varianten zum Testen.",
+      startPrice: "ab 790 €",
+      timeline: "5–10 Tage",
+      includes: [
+        "5–10 Creatives (Stills/Shorts)",
+        "Formate 1:1 / 9:16 / 16:9",
+        "Hook-Varianten + CTAs",
+        "Export + Übergabe",
+      ],
+      examples: [],
+    },
+  ],
+  faqs: [
+    { q: "Können Sie auch die Ausspielung übernehmen?", a: "Ja – in Kombination mit unserem SEO/Ads-Service begleiten wir Setup, Tracking und Optimierung." },
+  ],
+  cta: { text: "Kampagne starten", href: "/termin" },
+},
+
   ];
   
   export const getServiceSlugs = () => services.map((s) => s.slug);

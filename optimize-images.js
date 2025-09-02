@@ -2,40 +2,54 @@
 import sharp from "sharp";
 import { glob } from "glob";
 import path from "path";
-import fs from "fs";
+import fs from "fs/promises";
 
-const inputPattern = "public/craiyon_124738_image.{jpg,jpeg,png}";
-const outputQuality = 70; // جودة مناسبة (60-75 عادة مثالية)
+const INPUT_PATTERN = "public/designs/GermanyMap.png"; // <-- adjust to your real path
+const QUALITY = 70;
 
 (async () => {
-  const files = await glob(inputPattern, { nodir: true });
+  console.log("🟡 CWD:", process.cwd());
+  console.log("🟡 Pattern:", INPUT_PATTERN);
+
+  const files = await glob(INPUT_PATTERN, {
+    nodir: true,
+    windowsPathsNoEscape: true, // helps on Windows
+  });
+
+  console.log(`🔎 Found ${files.length} file(s).`);
+
+  if (files.length === 0) {
+    console.log("ℹ️ No matching images. Check your folder and the pattern above.");
+    return;
+  }
+
+  // optional: reduce sharp cache if processing many files
+  sharp.cache(false);
 
   for (const file of files) {
     const ext = path.extname(file);
-    const base = file.replace(ext, "");
+    const base = file.slice(0, -ext.length);
 
     console.log(`🔄 Optimizing: ${file}`);
 
-    // تأكد أن الملف فعلاً صورة
     try {
-      // WebP
-      await sharp(file)
-        .webp({ quality: outputQuality })
-        .toFile(`${base}.webp`);
+      // Ensure output dir exists (in case of odd paths)
+      await fs.mkdir(path.dirname(file), { recursive: true });
+
+      // WEBP
+      await sharp(file).webp({ quality: QUALITY }).toFile(`${base}.webp`);
 
       // AVIF
-      await sharp(file)
-        .avif({ quality: outputQuality })
-        .toFile(`${base}.avif`);
+      await sharp(file).avif({ quality: QUALITY }).toFile(`${base}.avif`);
 
-      // MozJPEG
-      await sharp(file)
-        .jpeg({ mozjpeg: true, quality: outputQuality })
-        .toFile(`${base}-optimized.jpg`);
+      // Optimized JPEG (keeps original too)
+      await sharp(file).jpeg({ mozjpeg: true, quality: QUALITY }).toFile(`${base}-optimized.jpg`);
 
       console.log(`✅ Done: ${file}`);
     } catch (err) {
-      console.error(`❌ Error processing ${file}:`, err);
+      console.error(`❌ Error processing ${file}:`, err.message);
     }
   }
+
+  console.log("🎉 All done.");
 })();

@@ -119,7 +119,7 @@ const Hero = () => {
                 width={155}
                 height={155}
                 loading="lazy"
-                sizes="(max-width: 640px) 8px, 105px"
+                sizes="(max-width: 640px) 80px, 105px"
                 className="cursor-pointer max-[680px]:max-w-[80px]"
                 role="button"
               />
