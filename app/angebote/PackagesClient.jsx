@@ -26,7 +26,7 @@ export default function PackagesClient({ lang, rtl, t, groups }) {
       {/* ambient glow */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#10B9811A] blur-3xl" />
-        <div className="absolute top-1/3 -right-40 h-[520px] w-[520px] rounded-full bg-[#D946EF1A] blur-3xl" />
+        <div className="absolute top-[33%] -right-40 h-[520px] w-[520px] rounded-full bg-[#D946EF1A] blur-3xl" />
       </div>
 
       <div className="mx-auto max-w-6xl px-6 py-14">
