@@ -33,7 +33,7 @@ export default function PackagesClient({ lang, rtl, t, groups }) {
       <div className="mx-auto max-w-6xl px-6 py-14">
         {/* Hero */}
         <header className={`${rtl ? "text-right" : ""} mb-10`}>
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-white/70">
             <Sparkles className="h-3.5 w-3.5" />
             {lang === "ar"
               ? "أسعار شفافة، نتائج قابلة للقياس"
@@ -42,7 +42,7 @@ export default function PackagesClient({ lang, rtl, t, groups }) {
               : "Transparente Preise, messbare Ergebnisse"}
           </span>
           <h1 className="mt-3 text-4xl md:text-5xl font-extrabold tracking-tight">{t.title}</h1>
-          <p className="mt-3 text-white/75 max-w-3xl leading-relaxed">{t.subtitle}</p>
+          <p className="mt-3 text-white/70 max-w-3xl leading-relaxed">{t.subtitle}</p>
         </header>
 
         {/* Packages */}
@@ -57,7 +57,7 @@ export default function PackagesClient({ lang, rtl, t, groups }) {
               </div>
 
               <div className="relative rounded-3xl p-[1px] bg-gradient-to-r from-emerald-500/40 via-cyan-500/30 to-fuchsia-500/40">
-                <div className="rounded-3xl bg-white/5 backdrop-blur-xl">
+                <div className="rounded-3xl bg-white/10 backdrop-blur-xl">
                   <div className="p-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                       {pivotPlans(g.rows, t).map((plan, idx) => {
@@ -83,7 +83,7 @@ export default function PackagesClient({ lang, rtl, t, groups }) {
                             )}
 
                             <div className="flex items-center gap-3">
-                              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 border border-white/10">
+                              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 border border-white/10">
                                 <Icon className="h-5 w-5 text-white/90" />
                               </div>
                               <h3 className="text-xl font-extrabold tracking-wide">{plan.name}</h3>
@@ -99,7 +99,7 @@ export default function PackagesClient({ lang, rtl, t, groups }) {
                                 const FeatureIcon = getFeatureIcon(f.key);
                                 return (
                                   <li key={i} className="flex items-start gap-3 text-white/80">
-                                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-white/5 border border-white/10 mt-0.5 shrink-0">
+                                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-white/10 border border-white/10 mt-0.5 shrink-0">
                                       <FeatureIcon className="h-3.5 w-3.5" />
                                     </span>
                                     <span className="leading-6">
