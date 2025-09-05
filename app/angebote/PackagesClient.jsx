@@ -98,7 +98,7 @@ export default function PackagesClient({ lang, rtl, t, groups }) {
                               {plan.features.map((f, i) => {
                                 const FeatureIcon = getFeatureIcon(f.key);
                                 return (
-                                  <li key={i} className="flex items-start gap-3 text-white/85">
+                                  <li key={i} className="flex items-start gap-3 text-white/80">
                                     <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-white/5 border border-white/10 mt-0.5 shrink-0">
                                       <FeatureIcon className="h-3.5 w-3.5" />
                                     </span>
