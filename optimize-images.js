@@ -4,7 +4,7 @@ import { glob } from "glob";
 import path from "path";
 import fs from "fs/promises";
 
-const INPUT_PATTERN = "public/designs/GermanyMap.png"; // <-- adjust to your real path
+const INPUT_PATTERN = "public/designs/last/*.{jpg,jpeg,png}"; // <-- adjust to your real path
 const QUALITY = 70;
 
 (async () => {
@@ -42,8 +42,7 @@ const QUALITY = 70;
       // AVIF
       await sharp(file).avif({ quality: QUALITY }).toFile(`${base}.avif`);
 
-      // Optimized JPEG (keeps original too)
-      await sharp(file).jpeg({ mozjpeg: true, quality: QUALITY }).toFile(`${base}-optimized.jpg`);
+
 
       console.log(`✅ Done: ${file}`);
     } catch (err) {

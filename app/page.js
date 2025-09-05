@@ -1,8 +1,13 @@
+// app/page.jsx (your "Page" component)
 import { Footer, Navbar } from '../components';
 import { About, Explore, Feedback, GetStarted, Hero, Insights, WhatsNew, World } from '../sections';
+import CookieConsent from '../components/CookieConsent'; // ← add
 
 const Page = () => (
   <div className="bg-primary-black overflow-hidden m-auto">
+    {/* Cookie Banner + Settings API */}
+    <CookieConsent />
+
     <Navbar />
     <Hero />
     <div className="relative">
@@ -12,14 +17,14 @@ const Page = () => (
     </div>
 
     <div className="relative">
-    <Insights />
+      <Insights />
       <div className="gradient-04 z-0" />
       {/* <WhatsNew /> */}
     </div>
+
     <World />
     <div className="relative">
-{/*     
-      <GetStarted /> */}
+      {/* <GetStarted /> */}
       <div className="gradient-04 z-0" />
       <Feedback />
     </div>

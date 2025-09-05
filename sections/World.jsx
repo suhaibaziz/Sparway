@@ -9,13 +9,14 @@ import BusinessMap from '../components/BusinessMap';
 
 
 const World = () => (
-  <section className={`${styles.paddings} relative z-10`}>
+  <section className={`${styles.paddings} relative z-10 overflow-visible`}>
     <motion.div
+    id='referal'
       variants={staggerContainer}
       initial="hidden"
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
-      className={`${styles.innerWidth} mx-auto flex flex-col`}
+      className={`${styles.innerWidth} w-full min-w-0 mx-auto flex flex-col`}
     >
       <TypingText title="| Referal benifets" textStyles="text-center" />
       <TitleText
@@ -62,8 +63,9 @@ const World = () => (
     <Image src="/designs/engineers.png" alt="Engineering" fill className="object-contain" />
   </div>
 </motion.div> */}
+<div className="mt-10 w-full min-w-0 overflow-visible">
 <BusinessMap/>
-
+</div>
     </motion.div>
   </section>
 );
