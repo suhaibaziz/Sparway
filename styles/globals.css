@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* html[dir="rtl"] * { direction: rtl; }
+html[dir="rtl"] body {
+  font-family: "Noto Sans Arabic", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+}
+/* Optional: flip common layout utilities if needed */
+/* html[dir="rtl"] .text-left { text-align: right; }
+html[dir="rtl"] .text-right { text-align: left; } */ */
+
 * {
   margin: 0;
   padding: 0;

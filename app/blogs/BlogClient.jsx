@@ -2,19 +2,71 @@
 
 import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function BlogClient({ initialPosts }) {
+  const sp = useSearchParams();
+  const rawLang = (sp.get("lang") || "de").toLowerCase();
+  const lang = ["de", "en", "ar"].includes(rawLang) ? rawLang : "de";
+  const rtl = lang === "ar";
+
+  // tiny i18n
+  const T = {
+    de: {
+      searchPh: "z.B. SEO..",
+      sortNewest: "Neueste",
+      sortPopular: "Beliebt",
+      all: "Alle",
+      readMore: "Weiterlesen",
+      loadMore: "Mehr laden",
+      empty: "Keine Beiträge gefunden. Passe Filter oder Suche an.",
+      min: "Min",
+      srchLabel: "Blog durchsuchen",
+      kHint: "⌘K",
+    },
+    en: {
+      searchPh: "e.g. SEO…",
+      sortNewest: "Newest",
+      sortPopular: "Popular",
+      all: "All",
+      readMore: "Read more",
+      loadMore: "Load more",
+      empty: "No posts found. Adjust filters or search.",
+      min: "min",
+      srchLabel: "Search blog",
+      kHint: "⌘K",
+    },
+    ar: {
+      searchPh: "مثال: سيو…",
+      sortNewest: "الأحدث",
+      sortPopular: "الأشهر",
+      all: "الكل",
+      readMore: "اقرأ المزيد",
+      loadMore: "تحميل المزيد",
+      empty: "لا توجد مقالات. غيّر عوامل التصفية أو ابحث.",
+      min: "د",
+      srchLabel: "ابحث في المدوّنة",
+      kHint: "⌘K",
+    },
+  }[lang];
+
   const [query, setQuery] = useState("");
-  const [activeTag, setActiveTag] = useState("Alle");
+  const [activeTag, setActiveTag] = useState(T.all);
   const [sortBy, setSortBy] = useState("newest"); // 'newest' | 'popular'
   const [visible, setVisible] = useState(6); // progressive reveal
+
+  // helper to keep ?lang on links
+  const withLang = (href) => {
+    const sep = href.includes("?") ? "&" : "?";
+    return `${href}${sep}lang=${lang}`;
+  };
 
   const allTags = useMemo(() => {
     const s = new Set();
     initialPosts.forEach((p) => p.tags?.forEach((t) => s.add(t)));
-    return ["Alle", ...Array.from(s)];
-  }, [initialPosts]);
+    return [T.all, ...Array.from(s)];
+  }, [initialPosts, T.all]);
 
   const sorted = useMemo(() => {
     const copy = [...initialPosts];
@@ -29,7 +81,7 @@ export default function BlogClient({ initialPosts }) {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return sorted.filter((p) => {
-      const matchTag = activeTag === "Alle" || p.tags?.includes(activeTag);
+      const matchTag = activeTag === T.all || p.tags?.includes(activeTag);
       const matchQ =
         !q ||
         p.title.toLowerCase().includes(q) ||
@@ -37,7 +89,7 @@ export default function BlogClient({ initialPosts }) {
         p.tags?.some((t) => t.toLowerCase().includes(q));
       return matchTag && matchQ;
     });
-  }, [sorted, activeTag, query]);
+  }, [sorted, activeTag, query, T.all]);
 
   // featured = first of filtered (after sort) for a hero card
   const [featured, ...rest] = filtered;
@@ -46,29 +98,31 @@ export default function BlogClient({ initialPosts }) {
   useEffect(() => setVisible(6), [query, activeTag, sortBy]);
 
   return (
-    <>
+    <div dir={rtl ? "rtl" : "ltr"} lang={lang}>
       {/* Controls */}
-      <div className="flex flex-col  gap-4 mb-8">
+      <div className="flex flex-col gap-4 mb-8">
         <div className="flex-1 flex gap-2">
           <div className="relative flex-1">
             <input
               type="search"
-              placeholder="z.B. SEO.."
+              placeholder={T.searchPh}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/20 max-[700px]:text-[10px] max-[700px]:py-2 max-[611px]:min-w-[80%] "
-              aria-label="Blog durchsuchen"
+              aria-label={T.srchLabel}
             />
-            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/50 text-sm">⌘K</span>
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/50 text-sm">
+              {T.kHint}
+            </span>
           </div>
           <Select
-          className="max-[700px]:hidden max-[700px]:text-[8px]"
-        label="||"
+            className="max-[700px]:hidden max-[700px]:text-[8px]"
+            label="||"
             value={sortBy}
             onChange={setSortBy}
             options={[
-              { value: "newest", label: "Neueste" },
-              { value: "popular", label: "Beliebt" },
+              { value: "newest", label: T.sortNewest },
+              { value: "popular", label: T.sortPopular },
             ]}
           />
         </div>
@@ -106,20 +160,29 @@ export default function BlogClient({ initialPosts }) {
               />
             </div>
             <div className="p-6 flex flex-col">
-              <span className="text-xs text-white/60">{formatDate(featured.date)} • {featured.readingMinutes} Min</span>
-              <h2 className="mt-2 text-2xl font-extrabold text-white max-[700px]:text-[14px]">{featured.title}</h2>
+              <span className="text-xs text-white/60">
+                {formatDate(featured.date, lang)} • {featured.readingMinutes} {T.min}
+              </span>
+              <h2 className="mt-2 text-2xl font-extrabold text-white max-[700px]:text-[14px]">
+                {featured.title}
+              </h2>
               <p className="mt-2 text-white/80 max-[700px]:text-[12px]">{featured.excerpt}</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {featured.tags?.map((t) => (
-                  <span key={t} className="text-xs  text-gray-300 rounded-full bg-white/10 px-2 py-1 border border-white/10">{t}</span>
+                  <span
+                    key={t}
+                    className="text-xs  text-gray-300 rounded-full bg-white/10 px-2 py-1 border border-white/10"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
               <div className="mt-auto pt-4">
                 <a
-                  href={`/blogs/${featured.slug}`}
+                  href={withLang(`/blogs/${featured.slug}`)}
                   className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-400 max-[700px]:text-[12px] text-[white] font-semibold px-4 py-2"
                 >
-                  Weiterlesen
+                  {T.readMore}
                   <Arrow />
                 </a>
               </div>
@@ -139,17 +202,29 @@ export default function BlogClient({ initialPosts }) {
               exit={{ opacity: 0, y: -8 }}
               className="group rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-cyan-400/40 transition"
             >
-              <a href={`/blogs/${p.slug}`} className="block">
+              <a href={withLang(`/blogs/${p.slug}`)} className="block">
                 <div className="relative w-full aspect-[16/10]">
-                  <Image src={p.cover} alt={p.title} fill className="object-cover group-hover:scale-[1.03] transition-transform" />
+                  <Image
+                    src={p.cover}
+                    alt={p.title}
+                    fill
+                    className="object-cover group-hover:scale-[1.03] transition-transform"
+                  />
                 </div>
                 <div className="p-4">
-                  <div className="text-xs text-white/60">{formatDate(p.date)} • {p.readingMinutes} Min</div>
+                  <div className="text-xs text-white/60">
+                    {formatDate(p.date, lang)} • {p.readingMinutes} {T.min}
+                  </div>
                   <h3 className="mt-1 text-lg font-bold text-white">{p.title}</h3>
                   <p className="mt-1 text-sm text-white/75 line-clamp-3">{p.excerpt}</p>
                   <div className="mt-3 flex items-center gap-2">
                     <div className="relative w-6 h-6 rounded-full overflow-hidden border border-white/20">
-                      <Image src={p.author?.avatar || "/avatars/sparway.png"} alt={p.author?.name || "Autor"} fill className="object-cover" />
+                      <Image
+                        src={p.author?.avatar || "/avatars/sparway.png"}
+                        alt={p.author?.name || (lang === "ar" ? "الكاتب" : lang === "en" ? "Author" : "Autor")}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
                     <span className="text-xs text-white/70">{p.author?.name}</span>
                   </div>
@@ -168,25 +243,23 @@ export default function BlogClient({ initialPosts }) {
             onClick={() => setVisible((v) => v + 6)}
             className="rounded-xl border border-white/20 bg-white/10 px-5 py-2 text-sm hover:bg-white/15"
           >
-            Mehr laden
+            {T.loadMore}
           </button>
         </div>
       )}
 
       {/* Empty state */}
       {!featured && (
-        <div className="mt-16 text-center text-white/70">
-          Keine Beiträge gefunden. Passe Filter oder Suche an.
-        </div>
+        <div className="mt-16 text-center text-white/70">{T.empty}</div>
       )}
-    </>
+    </div>
   );
 }
 
-function Select({ value, onChange, options, label }) {
+function Select({ value, onChange, options, label, className = "" }) {
   return (
-    <label className="inline-flex items-center gap-2 text-white/80 ">
-      <span className="text-sm ">{label}</span>
+    <label className={`inline-flex items-center gap-2 text-white/80 ${className}`}>
+      <span className="text-sm">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -210,9 +283,10 @@ function Arrow() {
   );
 }
 
-function formatDate(iso) {
+function formatDate(iso, lang = "de") {
   try {
-    return new Date(iso).toLocaleDateString("de-DE", {
+    const locale = lang === "ar" ? "ar-EG" : lang === "en" ? "en-GB" : "de-DE";
+    return new Date(iso).toLocaleDateString(locale, {
       year: "numeric",
       month: "short",
       day: "2-digit",

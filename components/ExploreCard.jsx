@@ -1,36 +1,77 @@
-
 'use client';
-
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { TiZoom } from 'react-icons/ti';
 import { motion, useReducedMotion } from 'framer-motion';
 import { fadeIn } from '../utils/motion';
 import styles from '../styles';
 
-// avoid arrow-parens + implicit-arrow-linebreak issues by using a fn
+const labels = {
+  de: {
+    explore: 'Mehr entdecken',
+    open: (title) => `„${title}“ öffnen`,
+    details: (title) => `${title} – Details ansehen`,
+  },
+  en: {
+    explore: 'Explore more',
+    open: (title) => `Open “${title}”`,
+    details: (title) => `${title} – View details`,
+  },
+  ar: {
+    explore: 'استكشف المزيد',
+    open: (title) => `افتح «${title}»`,
+    details: (title) => `${title} – عرض التفاصيل`,
+  },
+};
+
 function slugify(s) {
-  return s
-    .toLowerCase()
-    .replace(/&/g, 'und')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
+  return s.toLowerCase().replace(/&/g, 'und').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
-const ExploreCard = ({ id, imgUrl, title, index, active, handleClick, href }) => {
+const ExploreCard = ({
+  id,
+  imgUrl,
+  title,
+  index,
+  active,
+  handleClick,
+  href,      // from constants (already with ?lang via withLang)
+  lang: langProp,
+}) => {
+  const router = useRouter();
   const prefersReduced = useReducedMotion();
+  const searchParams = useSearchParams();
+  const langRaw = langProp || searchParams.get('lang') || 'de';
+  const lang = ['de', 'en', 'ar'].includes(langRaw) ? langRaw : 'de';
+  const t = labels[lang];
+  const isRTL = lang === 'ar';
 
-  const onActivate = () => handleClick?.(id);
+  // Use provided href or safe fallback
+  const computedHref = href || `/leistungen/${slugify(title)}?lang=${lang}`;
 
-  const onKeyDown = e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onActivate();
+  const go = () => {
+    if (!computedHref) return;
+    router.push(computedHref);
+  };
+
+  const onCardClick = () => {
+    if (active === id) {
+      // already active → navigate now
+      go();
+    } else {
+      // activate first
+      handleClick?.(id);
     }
   };
 
-  const link = href || `/leistungen/${slugify(title)}`;
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onCardClick();
+    }
+  };
 
   return (
     <motion.div
@@ -41,14 +82,15 @@ const ExploreCard = ({ id, imgUrl, title, index, active, handleClick, href }) =>
          h-auto aspect-[3/4] lg:h-[640px]
          transition-[flex] duration-[700ms] ease-out-flex cursor-pointer
          [content-visibility:auto] [contain-intrinsic-size:640px]`}
-      onClick={onActivate}
+      onClick={onCardClick}
       onKeyDown={onKeyDown}
       role="button"
       tabIndex={0}
       aria-pressed={active === id}
-      aria-label={`Open ${title}`}
+      aria-label={t.open(title)}
+      dir={isRTL ? 'rtl' : 'ltr'}
+      lang={lang}
     >
-      {/* background image */}
       <Image
         src={imgUrl}
         alt={title}
@@ -59,7 +101,6 @@ const ExploreCard = ({ id, imgUrl, title, index, active, handleClick, href }) =>
         className="absolute inset-0 rounded-[24px] object-cover"
       />
 
-      {/* overlay */}
       {active !== id ? (
         <div className="pointer-events-none absolute bottom-0 h-1/3 w-full p-2 bg-[rgba(0,0,0,0.7)] rounded-b-[24px]">
           <h3 className="absolute z-0 font-semibold sm:text-[26px] text-[18px] text-white lg:bottom-20 lg:rotate-[-90deg] lg:origin-[0,0]">
@@ -67,22 +108,25 @@ const ExploreCard = ({ id, imgUrl, title, index, active, handleClick, href }) =>
           </h3>
         </div>
       ) : (
-        <div className="absolute bottom-0 w-full p-8 bg-[rgba(0,0,0,0.5)] rounded-b-[24px]">
+        <div className="absolute bottom-0 w-full p-8 bg-[rgba(0,0,0,0.5)] rounded-b-[24px] z-10">
           <div className={`${styles.flexCenter} mb-[16px] h-[60px] w-[60px] glassmorphism rounded-[12px]`}>
+            {/* optional secondary link (zoom button) */}
             <Link
-              href={link}
-              aria-label={`${title} – Details ansehen`}
-              onClick={e => {
-                e.stopPropagation();
-              }}
+              href={computedHref}
+              aria-label={t.details(title)}
+              onClick={(e) => e.stopPropagation()}
               className="block rounded-xl p-2 bg-black/50 backdrop-blur hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/40"
             >
               <TiZoom className="h-6 w-6 text-white" />
             </Link>
           </div>
 
-          <p className="font-normal text-[16px] leading-[20.16px] text-white uppercase">Explore more</p>
-          <h2 className="mt-[24px] font-semibold sm:text-[32px] text-[24px] text-white">{title}</h2>
+          <p className={`font-normal text-[16px] leading-[20.16px] text-white uppercase ${isRTL ? 'text-right' : ''}`}>
+            {t.explore}
+          </p>
+          <h2 className={`mt-[24px] font-semibold sm:text-[32px] text-[24px] text-white ${isRTL ? 'text-right' : ''}`}>
+            {title}
+          </h2>
         </div>
       )}
     </motion.div>

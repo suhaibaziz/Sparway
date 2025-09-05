@@ -1,19 +1,47 @@
 'use client';
 
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useSearchParams } from 'next/navigation';
+import { getExploreWorlds } from '../constants';
+import { isRTL } from '../app/i18n/i18n';
 import styles from '../styles';
 import { TypingText, ExploreCard, TitleText } from '../components';
 import { staggerContainer } from '../utils/motion';
 
-import { exploreWorlds } from '../constants';
+// i18n dictionary
+const dict = {
+  de: {
+    typing: '| unsere digitale Welt',
+    title: <>Wählen Sie die Branche,<br className="md:block hidden" />die Sie mit uns entdecken möchten.</>,
+  },
+  en: {
+    typing: '| our digital world',
+    title: <>Choose the industry<br className="md:block hidden" />you want to explore with us.</>,
+  },
+  ar: {
+    typing: '| عالمنا الرقمي',
+    title: <>اختر المجال<br className="md:block hidden" />الذي تريد استكشافه معنا.</>,
+  },
+};
 
 const Explore = () => {
-  const [active, setActive] = useState('world-2');
+  const searchParams = useSearchParams();
+  const lang = (searchParams.get('lang') || 'de').toLowerCase();
+  const t = dict[lang] ?? dict.de; // <-- define t with fallback
+
+  const worlds = getExploreWorlds(lang) || [];
+  const [active, setActive] = useState('world-1');
+
+  // If you want the first world to be active by default:
+  useEffect(() => {
+    if (worlds.length > 0) setActive((prev) => (prev && prev !== 'world-6' ? prev : worlds[0].id));
+  }, [worlds]);
+
+  const rtl = isRTL(lang);
 
   return (
-    <section className={`${styles.paddings}`} id="leistungen">
+    <section id="leistungen" >
       <motion.div
         variants={staggerContainer}
         initial="hidden"
@@ -21,17 +49,17 @@ const Explore = () => {
         viewport={{ once: false, amount: 0.25 }}
         className={`${styles.innerWidth} mx-auto flex flex-col`}
       >
-        <TypingText title="| unsere digitale Welt" textStyles="text-center" />
-        <TitleText title={<>Wählen Sie die Branche, <br className="md:block hidden " />die Sie mit uns entdecken möchten.</>} textStyles="text-center" />
+        <TypingText title={t.typing} textStyles="text-center" />
+        <TitleText title={t.title} textStyles="text-center" />
 
         <div className="mt-[50px] flex lg:flex-row flex-col min-h-[70vh] gap-5">
-          {exploreWorlds.map((world, index) => (
+          {worlds.map((world, index) => (
             <ExploreCard
               key={world.id}
-              {...world}
+              {...world}           // title already localized + href with ?lang
               index={index}
               active={active}
-              handleClick={setActive}
+              handleClick={setActive} // ExploreCard should call handleClick(world.id)
             />
           ))}
         </div>
