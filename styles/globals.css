@@ -140,13 +140,3 @@ html[dir="rtl"] .text-right { text-align: left; } */ */
   background: #65c4fa;
   filter: blur(150px);
 }
-
-/* BEFORE (works) */
-.text-white\/60 { color: rgb(255 255 255 / 0.6); }
-.bg-white\/5   { background-color: rgb(255 255 255 / 0.05); }
-.border-white\/5 { border-color: rgb(255 255 255 / 0.05); }
-
-/* AFTER (works) */
-.text-white\/85 { color: rgb(255 255 255 / 0.85); }
-.bg-white\/10   { background-color: rgb(255 255 255 / 0.1); }
-.border-white\/10 { border-color: rgb(255 255 255 / 0.1); }
