@@ -21,7 +21,7 @@ const dict = {
   },
   ar: {
     typing: '| عالمنا الرقمي',
-    title: <>اختر المجال<br className="md:block hidden" />الذي تريد استكشافه معنا.</>,
+    title: <>اختر المجال <br className="md:block hidden" />الذي تريد استكشافه معنا.</>,
   },
 };
 
@@ -41,7 +41,7 @@ const Explore = () => {
   const rtl = isRTL(lang);
 
   return (
-    <section id="leistungen" >
+    <section id="leistungen" className='p-4' >
       <motion.div
         variants={staggerContainer}
         initial="hidden"
